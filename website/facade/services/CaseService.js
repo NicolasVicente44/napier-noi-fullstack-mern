@@ -6,13 +6,13 @@ const CaseService = (async () => {
   return {
     index: async (cookies) => {
       try {
-        const noiCases = await apiProvider.get("/cases", {
+        const cases = await apiProvider.get("/cases", {
           headers: {
             Cookie: cookies,
           },
         });
 
-        return noiCases.data?.noiCases || [];
+        return cases.data?.cases || [];
       } catch (error) {
         throw error;
       }
@@ -26,7 +26,7 @@ const CaseService = (async () => {
           },
         });
 
-        return noiCases.data?.noiCases || {};
+        return noiCase.data?.noiCase || {}; // Changed from noiCases to noiCase
       } catch (error) {
         throw error;
       }

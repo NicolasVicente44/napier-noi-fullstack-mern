@@ -11,7 +11,7 @@ const Navigation = () => {
     { label: "About", link: "/about" },
     { label: "Contact", link: "/contact" }, // Moved Contact link here
 
-    ...(user ? [{ label: "Listings", link: "/listings" }] : []),
+    ...(user ? [{ label: "NOI Cases", link: "/cases" }] : []),
   ];
 
   return (

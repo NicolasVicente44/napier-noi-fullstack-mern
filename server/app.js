@@ -5,18 +5,21 @@ import MongooseSetup from "./lib/MongooseSetup.js";
 import PassportSetup from "./lib/PassportSetup.js";
 import session from "express-session";
 import cors from "cors";
-import multer from "multer"; // Import multer
+import multer from "multer";
+import bodyParser from "body-parser";
 
 // This loads our .env and adds the variables to the environment
 dotenv.config();
 
 // This creates our application
 const app = express();
+// Increase the payload size limit for JSON requests
+app.use(bodyParser.json({ limit: "10mb" }));
 
+// Increase the payload size limit for URL-encoded requests
+app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
 
-app.use('/generated_pdfs', express.static('generated_pdfs'));
-
-// This sets up CORS
+// Setup CORS
 const corsOptions = {
   origin: process.env.CORS_ORIGIN,
   credentials: true,
@@ -41,7 +44,6 @@ app.use(
 app.use((req, res, next) => {
   res.locals.notifications = req.session?.notifications;
   delete req.session.notifications;
-
   next();
 });
 
@@ -51,65 +53,56 @@ MongooseSetup();
 // Setup Passport
 PassportSetup(app);
 
-// This sets our view engine (HTML renderer)
+// Set our view engine (HTML renderer)
 app.set("view engine", "ejs");
 
-// This sets the public assets folder
+// Set the public assets folder
 app.use(express.static("public"));
 app.use(express.static("avatars"));
-
-// Middleware for parsing url-encoded requests
-app.use(express.urlencoded({ extended: true }));
 
 // Middleware for parsing JSON requests
 app.use(express.json());
 
-// Set up multer middleware to handle multipart/form-data
-const upload = multer();
-
-// Middleware to handle form data with multipart/form-data
-app.use(upload.none());
+// Middleware for parsing url-encoded requests
+app.use(express.urlencoded({ extended: true }));
 
 // Method overriding to deal with unsupported HTTP methods in certain platforms
 app.use((req, _, next) => {
   if (req.body && typeof req.body === "object" && "_method" in req.body) {
     const method = req.body._method;
-
     delete req.body._method;
-
     req.method = method;
   }
-
   next();
 });
 
+// Set up routes
 RoutesSetup(app);
 
-// Our error handler
+// Error handler
 app.use((error, req, res, __) => {
-  // Converts string errors to proper errors
+  // Convert string errors to proper errors
   if (typeof error === "string") {
     error = new Error(error);
   }
-
-  // Adds a generic status
+  // Add a generic status
   if (!error.status) error.status = 404;
 
-  // Outputs our error and stack trace to our console
+  // Output error and stack trace to console
   console.error(error);
 
   // Handle the various formats for our API
   res.format({
     "text/html": () => {
-      // Outputs the error to the user
-      if (req.session)
+      // Output the error to the user
+      if (req.session) {
         req.session.notifications = [
           {
             alertType: "alert-danger",
             message: error.message,
           },
         ];
-
+      }
       res.status(error.status).redirect("/");
     },
     "application/json": () => {
@@ -123,8 +116,5 @@ app.use((error, req, res, __) => {
   });
 });
 
-/**
- * We are exporting our application so we are able to use it in
- * our tests
- */
+// Export the application
 export default app;

@@ -6,32 +6,36 @@ import { useNavigate } from "react-router-dom";
 import Form from "./Form";
 
 const Register = () => {
-    const [user, setUser] = useState({});
-    const navigate = useNavigate();
+  const [user, setUser] = useState({});
+  const navigate = useNavigate();
 
-    const submitForm = async (event) => {
-        event.preventDefault();
+  const submitForm = async (event) => {
+    event.preventDefault();
 
-        try {
-            await axios.post("/api/users", user);
-            toast("User registered successfully");
-            navigate("/login");
-        } catch (error) {
-            toast.error(error?.response?.data?.error?.message || "An error occurred");
-        }
-    };
+    try {
+      await axios.post("/api/users", user);
+      toast("User registered successfully");
+      navigate("/login");
+    } catch (error) {
+      toast.error(error?.response?.data?.error?.message || "An error occurred");
+    }
+  };
 
-    return (
-        <div>
-            <PageTitle title="Register" />
-            <div className="text-center">
-            <h1>Register With Proper Pulse</h1>
+  return (
+    <div>
+      <PageTitle title="Register" />
+      <div className="text-center">
+        <h1>Register With Proper Pulse</h1>
+      </div>
 
-        </div>
-
-            <Form user={user} setUser={setUser} submitForm={submitForm} submitLabel="Register" />
-        </div>
-    );
+      <Form
+        user={user}
+        setUser={setUser}
+        submitForm={submitForm}
+        submitLabel="Register"
+      />
+    </div>
+  );
 };
 
 export default Register;

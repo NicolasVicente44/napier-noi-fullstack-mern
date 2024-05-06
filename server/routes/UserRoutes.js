@@ -49,7 +49,6 @@ router.get("/:id/edit", isAuthenticated, edit);
 router.post("/", (req, _, next) => {
     next();
 }, upload.single("avatar"), create);
-
 // Handle issue with multipart forms not having detectable fields unless they've gone through multer
 router.post("/:id", (req, res, next) => {
     req.method = "put"; // Correct the HTTP method for PUT requests

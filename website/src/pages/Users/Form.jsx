@@ -126,8 +126,15 @@ const Form = ({ user, setUser, submitForm, submitLabel }) => {
             <input
               id="dropzone-file"
               type="file"
-              onChange={(e) => setUser({ ...user, avatar: e.target.files[0] })}
-              class="hidden"
+              onChange={(e) => {
+                const file = e.target.files[0];
+                // Check if a file was selected
+                if (file) {
+                  // Set the filename in the user state
+                  setUser({ ...user, avatar: file.name });
+                }
+              }}
+              className="hidden"
             />
           </label>
         </div>
@@ -136,7 +143,6 @@ const Form = ({ user, setUser, submitForm, submitLabel }) => {
           type="submit"
           className="bg-black mt-8 text-white font-bold py-4 px-8 mb-6 w-full rounded-lg"
         >
-            
           {submitLabel}
         </button>
       </form>

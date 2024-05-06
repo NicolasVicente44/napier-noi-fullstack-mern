@@ -1,0 +1,106 @@
+<%- include("../shared/_header") %>
+<div class="container mt-5">
+  <h1>caseData Details</h1>
+  <hr class="my-5" />
+  <div>
+    <h3>Client Information</h3>
+    <p><strong>Client Name:</strong> <%= caseData.clientName %></p>
+    <p><strong>VIN/Serial Number:</strong> <%= caseData.VIN_serialNum %></p>
+    <p><strong>Asset Description:</strong> <%= caseData.assetDescription %></p>
+    <p><strong>License Plate:</strong> <%= caseData.licensePlate %></p>
+    <p><strong>Registered Owner:</strong> <%= caseData.registeredOwner %></p>
+    <p><strong>Lien Holder:</strong> <%= caseData.lienHolder %></p>
+  </div>
+  <div>
+    <h3>Costs and Dates</h3>
+    <p><strong>Days of Storage:</strong> <%= caseData.daysOfStorage %></p>
+    <p><strong>Storage Rate:</strong> <%= caseData.storageRate %></p>
+    <p><strong>Amount of Arrears:</strong> <%= caseData.amountOfArrears %></p>
+    <p><strong>Bailiff Costs:</strong> <%= caseData.bailiffCosts %></p>
+    <p><strong>Towing Cost:</strong> <%= caseData.towingCost %></p>
+    <p><strong>Storage Costs:</strong> <%= caseData.storageCosts %></p>
+    <p><strong>NOI Costs:</strong> <%= caseData.NOICosts %></p>
+    <p><strong>HST on Costs:</strong> <%= caseData.HSTOnCosts %></p>
+    <p>
+      <strong>Closing Date:</strong> <%= caseData.closingDate ?
+      caseData.closingDate.toISOString().split('T')[0] : '' %>
+    </p>
+    <p>
+      <strong>Form Date:</strong> <%= caseData.formDate ?
+      caseData.formDate.toISOString().split('T')[0] : '' %>
+    </p>
+    <p>
+      <strong>Total of Storage Rate:</strong> <%= caseData.totalOfStorageRate %>
+    </p>
+    <p>
+      <strong>Date of Additional Charges:</strong> <%=
+      caseData.dateOfAdditionalCharges ?
+      caseData.dateOfAdditionalCharges.toISOString().split('T')[0] : '' %>
+    </p>
+    <p>
+      <strong>Repo Date:</strong> <%= caseData.repoDate ?
+      caseData.repoDate.toISOString().split('T')[0] : '' %>
+    </p>
+    <p>
+      <strong>Date NOI Sent:</strong> <%= caseData.dateNOISent ?
+      caseData.dateNOISent.toISOString().split('T')[0] : '' %>
+    </p>
+  </div>
+  <div>
+    <h3>Affidavit Information</h3>
+    <p>
+      <strong>Staff Affidavit Name:</strong> <%= caseData.staffAffidavitName %>
+    </p>
+    <p>
+      <strong>Registered Owner Contact:</strong> <%=
+      caseData.registeredOwnerCont %>
+    </p>
+    <p>
+      <strong>Affidavit Date 1:</strong> <%= caseData.Affidavit_Date1 ?
+      caseData.Affidavit_Date1.toISOString().split('T')[0] : '' %>
+    </p>
+    <p>
+      <strong>Affidavit Date 2:</strong> <%= caseData.Affidavit_Date2 ?
+      caseData.Affidavit_Date2.toISOString().split('T')[0] : '' %>
+    </p>
+  </div>
+  <div>
+    <h3>Other Information</h3>
+    <p><strong>Template Path:</strong> <%= caseData.templatePath %></p>
+  </div>
+
+
+      <div>
+        <h3>Generated PDF</h3>
+        <!-- Add an iframe element to display the generated PDF -->
+        <iframe
+          id="pdfViewer"
+          style="width: 100%; height: 600px"
+          frameborder="0"
+        ></iframe>
+      </div>
+    <%- include("../shared/_footer") %>
+    
+    <% if (caseData && caseData.clientName && caseData.VIN_serialNum) { %>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const pdfViewer = document.getElementById("pdfViewer");
+    
+        // Construct the PDF file path based on the client name and VIN/Serial Number
+        const clientName = "<%= caseData.clientName.replace(/[^a-zA-Z0-9]/g, '') %>"; // Ensure client name is URL-safe
+        const VIN_serialNum = "<%= caseData.VIN_serialNum.replace(/[^a-zA-Z0-9]/g, '') %>"; // Ensure VIN/Serial Number is URL-safe
+        const pdfFilePath = `/generated_pdfs/NOI_${clientName}_${VIN_serialNum}.pdf`;
+    
+        // Load the PDF file into the iframe
+        pdfViewer.src = pdfFilePath;
+      });
+    </script>
+    <% } %>
+    
+  </div>
+
+  <div class="text-center"></div>
+  <a href="/cases">Back to cases</a>
+</div>
+<%- include("../shared/_footer") %>
+

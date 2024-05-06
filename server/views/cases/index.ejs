@@ -1,0 +1,43 @@
+<%- include("../shared/_header") %>
+<div class="container mt-5">
+  <h1>Cases List</h1>
+  <hr class="my-5" />
+  <a href="/cases/new">Create a new case</a>
+  <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th>Client Name</th>
+        <th>VIN/Serial Number</th>
+        <th>Asset Description</th>
+        <th>Registered Owner</th>
+        <th>Form Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (cases && cases.length > 0) { %> <% cases.forEach(({ id, clientName,
+      VIN_serialNum, assetDescription, registeredOwner, formDate }) => { %>
+      <tr>
+        <td><%= clientName %></td>
+        <td><%= VIN_serialNum %></td>
+        <td><%= assetDescription %></td>
+        <td><%= registeredOwner %></td>
+        <td><%= formDate ? formDate.toISOString().split('T')[0] : '' %></td>
+        <td>
+          <a href="/cases/<%= id %>">view</a> |
+          <a href="/cases/<%= id %>/edit">edit</a> |
+          <form
+            action="/cases/<%= id %>"
+            method="post"
+            onsubmit="return confirm('Are you sure you want to delete this case?')"
+          >
+            <input type="hidden" name="_method" value="delete" />
+            <button class="standard-link" type="submit">delete</button>
+          </form>
+        </td>
+      </tr>
+      <% }) %> <% } %>
+    </tbody>
+  </table>
+</div>
+<%- include("../shared/_footer") %>

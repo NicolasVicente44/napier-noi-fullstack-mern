@@ -1,0 +1,370 @@
+<% let action = ""; let clientName = ""; let VIN_serialNum = ""; let
+assetDescription = ""; let licensePlate = ""; let registeredOwner = ""; let
+lienHolder = ""; let daysOfStorage = ""; let storageRate = ""; let
+amountOfArrears = ""; let bailiffCosts = ""; let towingCost = ""; let
+storageCosts = ""; let NOICosts = ""; let HSTOnCosts = ""; let closingDate = "";
+let formDate = ""; let totalOfStorageRate = ""; let dateOfAdditionalCharges =
+""; let repoDate = ""; let dateNOISent = ""; let staffAffidavitName = ""; let
+registeredOwnerCont = ""; let Affidavit_Date1 = ""; let Affidavit_Date2 = "";
+let templatePath = ""; let method = "post"; if (typeof caseData !== "undefined")
+{ action = `/${caseData.id}`; clientName = caseData.clientName; VIN_serialNum =
+caseData.VIN_serialNum; assetDescription = caseData.assetDescription;
+licensePlate = caseData.licensePlate; registeredOwner =
+caseData.registeredOwner; lienHolder = caseData.lienHolder; daysOfStorage =
+caseData.daysOfStorage; storageRate = caseData.storageRate; amountOfArrears =
+caseData.amountOfArrears; bailiffCosts = caseData.bailiffCosts; towingCost =
+caseData.towingCost; storageCosts = caseData.storageCosts; NOICosts =
+caseData.NOICosts; HSTOnCosts = caseData.HSTOnCosts; closingDate =
+caseData.closingDate; formDate = caseData.formDate; totalOfStorageRate =
+caseData.totalOfStorageRate; dateOfAdditionalCharges =
+caseData.dateOfAdditionalCharges; repoDate = caseData.repoDate; dateNOISent =
+caseData.dateNOISent; staffAffidavitName = caseData.staffAffidavitName;
+registeredOwnerCont = caseData.registeredOwnerCont; Affidavit_Date1 =
+caseData.Affidavit_Date1; Affidavit_Date2 = caseData.Affidavit_Date2;
+templatePath = caseData.templatePath; method = "put"; } %>
+
+<form
+  action="/cases<%= action %>"
+  method="post"
+  class="mt-3"
+  id="pdfForm"
+  data-case-id="<%= caseData.id %>"
+>
+  <input type="hidden" name="_method" value="<%= method %>" />
+
+  <h2>NOI Type</h2>
+  <hr />
+  <div class="mb-3">
+    <label for="templatePath" class="form-label">NOI Form Type:</label>
+    <select class="form-select" id="templatePath" name="templatePath">
+      <option id="templatePath" value="" selected disabled>
+        Select NOI Type
+      </option>
+      <% // Populate the dropdown options with enum values %> <%
+      templateTypes.forEach(template => { %>
+      <option value="<%= template %>"><%= template %></option>
+      <% }); %>
+    </select>
+  </div>
+
+  <h2>Client & Lien Holder Information</h2>
+  <hr />
+  <div class="mb-3">
+    <label for="clientName" class="form-label">Client Name:</label>
+    <input
+      type="text"
+      class="form-control"
+      id="clientName"
+      name="clientName"
+      required
+      value="<%= clientName %>"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label for="lienHolder" class="form-label">Lien Holder:</label>
+    <input
+      type="text"
+      class="form-control"
+      id="lienHolder"
+      name="lienHolder"
+      value="<%= lienHolder %>"
+    />
+  </div>
+
+  <h2>Asset Information</h2>
+  <hr />
+  <div class="mb-3">
+    <label for="VIN_serialNum" class="form-label">VIN/Serial Number:</label>
+    <input
+      type="text"
+      class="form-control"
+      id="VIN_serialNum"
+      name="VIN_serialNum"
+      required
+      value="<%= VIN_serialNum %>"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label for="assetDescription" class="form-label">Asset Description:</label>
+    <input
+      type="text"
+      class="form-control"
+      id="assetDescription"
+      name="assetDescription"
+      value="<%= assetDescription %>"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label for="licensePlate" class="form-label">License Plate:</label>
+    <input
+      type="text"
+      class="form-control"
+      id="licensePlate"
+      name="licensePlate"
+      value="<%= licensePlate %>"
+    />
+  </div>
+
+  <h2>Owner Information</h2>
+  <hr />
+
+  <div class="mb-3">
+    <label for="registeredOwner" class="form-label">Registered Owner:</label>
+    <input
+      type="text"
+      class="form-control"
+      id="registeredOwner"
+      name="registeredOwner"
+      value="<%= registeredOwner %>"
+    />
+  </div>
+  <div class="mb-3">
+    <label for="registeredOwnerCont" class="form-label"
+      >Registered Owner Address:</label
+    >
+    <input
+      type="text"
+      class="form-control"
+      id="registeredOwnerCont"
+      name="registeredOwnerCont"
+      value="<%= registeredOwnerCont %>"
+    />
+  </div>
+
+  <h2>Cost and Fee Information</h2>
+  <hr />
+
+  <div class="mb-3">
+    <label for="daysOfStorage" class="form-label">Days of Storage:</label>
+    <input
+      type="text"
+      class="form-control"
+      id="daysOfStorage"
+      name="daysOfStorage"
+      value="<%= daysOfStorage %>"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label for="storageRate" class="form-label">Storage Rate:</label>
+    <input
+      type="text"
+      class="form-control"
+      id="storageRate"
+      name="storageRate"
+      value="<%= storageRate %>"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label for="amountOfArrears" class="form-label">Amount of Arrears:</label>
+    <input
+      type="text"
+      class="form-control"
+      id="amountOfArrears"
+      name="amountOfArrears"
+      value="<%= amountOfArrears %>"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label for="bailiffCosts" class="form-label">Bailiff Costs:</label>
+    <input
+      type="text"
+      class="form-control"
+      id="bailiffCosts"
+      name="bailiffCosts"
+      value="<%= bailiffCosts %>"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label for="towingCost" class="form-label">Towing Cost:</label>
+    <input
+      type="text"
+      class="form-control"
+      id="towingCost"
+      name="towingCost"
+      value="<%= towingCost %>"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label for="storageCosts" class="form-label">Storage Costs:</label>
+    <input
+      type="text"
+      class="form-control"
+      id="storageCosts"
+      name="storageCosts"
+      value="<%= storageCosts %>"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label for="NOICosts" class="form-label">NOI Costs:</label>
+    <input
+      type="text"
+      class="form-control"
+      id="NOICosts"
+      name="NOICosts"
+      value="<%= NOICosts %>"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label for="HSTOnCosts" class="form-label">HST on Costs:</label>
+    <input
+      type="text"
+      class="form-control"
+      id="HSTOnCosts"
+      name="HSTOnCosts"
+      value="<%= HSTOnCosts %>"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label for="totalOfStorageRate" class="form-label"
+      >Total of Storage Rate:</label
+    >
+    <input
+      type="text"
+      class="form-control"
+      id="totalOfStorageRate"
+      name="totalOfStorageRate"
+      value="<%= totalOfStorageRate %>"
+    />
+  </div>
+
+  <h2>Date Information</h2>
+  <hr />
+
+  <div class="mb-3">
+    <label for="formDate" class="form-label">Form Date:</label>
+    <input
+      type="date"
+      class="form-control"
+      id="formDate"
+      name="formDate"
+      value="<%= formDate ? formDate.toISOString().split('T')[0] : '' %>"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label for="dateOfAdditionalCharges" class="form-label"
+      >Date of Additional Charges:</label
+    >
+    <input
+      type="date"
+      class="form-control"
+      id="dateOfAdditionalCharges"
+      name="dateOfAdditionalCharges"
+      value="<%= dateOfAdditionalCharges ? dateOfAdditionalCharges.toISOString().split('T')[0] : '' %>"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label for="repoDate" class="form-label">Repo Date:</label>
+    <input
+      type="date"
+      class="form-control"
+      id="repoDate"
+      name="repoDate"
+      value="<%= repoDate ? repoDate.toISOString().split('T')[0] : '' %>"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label for="dateNOISent" class="form-label">Date NOI Sent:</label>
+    <input
+      type="date"
+      class="form-control"
+      id="dateNOISent"
+      name="dateNOISent"
+      value="<%= dateNOISent ? dateNOISent.toISOString().split('T')[0] : '' %>"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label for="Affidavit_Date1" class="form-label">Affidavit Date 1:</label>
+    <input
+      type="date"
+      class="form-control"
+      id="Affidavit_Date1"
+      name="Affidavit_Date1"
+      value="<%= Affidavit_Date1 ? Affidavit_Date1.toISOString().split('T')[0] : '' %>"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label for="Affidavit_Date2" class="form-label">Affidavit Date 2:</label>
+    <input
+      type="date"
+      class="form-control"
+      id="Affidavit_Date2"
+      name="Affidavit_Date2"
+      value="<%= Affidavit_Date2 ? Affidavit_Date2.toISOString().split('T')[0] : '' %>"
+    />
+  </div>
+
+  <h2>Staff Information</h2>
+  <hr />
+  <div class="mb-3">
+    <label for="staffAffidavitName" class="form-label"
+      >Staff Affidavit Name:</label
+    >
+    <input
+      type="text"
+      class="form-control"
+      id="staffAffidavitName"
+      name="staffAffidavitName"
+      value="<%= staffAffidavitName %>"
+    />
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+
+  <button type="button" id="generatePdfButton" class="btn btn-success">
+    Generate PDF
+  </button>
+</form>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const generatePdfButton = document.getElementById("generatePdfButton");
+    const pdfForm = document.getElementById("pdfForm");
+    const caseId = pdfForm.dataset.caseId; // Retrieve the caseId from the data attribute
+    const templatePath = document.getElementById("templatePath"); // Retrieve the templatePath input element
+
+    generatePdfButton.addEventListener("click", async function () {
+      if (templatePath.value === "") {
+        // Check if templatePath is empty
+        console.error("Template path is empty");
+        // Set focus on the template path input
+        templatePath.focus();
+        return; // Exit the function if templatePath is empty
+      }
+
+      try {
+        const formData = new FormData(pdfForm);
+        const response = await fetch(`/cases/${caseId}/generate-pdf`, {
+          method: "PUT", // Change method to PUT
+          body: formData,
+        });
+
+        if (response.ok) {
+          const pdfBlob = await response.blob();
+          // Handle the PDF blob (e.g., open in a new tab, download, etc.)
+          const pdfUrl = URL.createObjectURL(pdfBlob);
+          window.open(pdfUrl);
+        } else {
+          throw new Error("Failed to generate PDF");
+        }
+      } catch (error) {
+        console.error("Error generating PDF:", error);
+        // Handle error, e.g., show an error message to the user
+      }
+    });
+  });
+</script>

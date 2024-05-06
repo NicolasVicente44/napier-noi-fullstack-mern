@@ -1,0 +1,15 @@
+<%- include("../shared/_header") %>
+
+<div class="container mt-5">
+    <h1>
+        <%= formType === "create" ? "Create New Application Credential Set" : "Update Application Credential Set" %>
+    </h1>
+
+    <hr class="my-5">
+
+    <%- include("./_form") %>
+
+    <a href="/applications">Back to applications</a>
+</div>
+
+<%- include("../shared/_footer") %>

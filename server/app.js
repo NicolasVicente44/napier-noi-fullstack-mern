@@ -7,6 +7,7 @@ import session from "express-session";
 import cors from "cors";
 import multer from "multer";
 import bodyParser from "body-parser";
+import path from "path"; // Import the path module
 
 // This loads our .env and adds the variables to the environment
 dotenv.config();
@@ -15,7 +16,6 @@ dotenv.config();
 const app = express();
 // Increase the payload size limit for JSON requests
 app.use(bodyParser.json({ limit: "10mb" }));
-
 
 // Increase the payload size limit for URL-encoded requests
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
@@ -80,6 +80,11 @@ app.use((req, _, next) => {
 // Set up routes
 RoutesSetup(app);
 
+// Serve files from the generated_pdfs directory
+
+const currentDir = path.dirname(new URL(import.meta.url).pathname);
+app.use("/generated_pdfs", express.static(path.join(currentDir, "generated_pdfs")));
+
 // Error handler
 app.use((error, req, res, __) => {
   // Convert string errors to proper errors
@@ -119,4 +124,3 @@ app.use((error, req, res, __) => {
 
 // Export the application
 export default app;
-  

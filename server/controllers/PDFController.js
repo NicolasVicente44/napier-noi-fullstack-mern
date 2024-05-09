@@ -19,13 +19,13 @@ async function generatePDF(formData) {
       "NOITemplates",
       formData.templatePath
     );
-
     const templateBytes = await fs.promises.readFile(templatePath);
     const templatePdf = await PDFDocument.load(templateBytes);
-
     const formKeys = Object.keys(formData);
+
     for (const key of formKeys) {
-      if (key === "templatePath") continue;
+      // Skip the "_method" and "templatePath" keys
+      if (key === "_method" || key === "templatePath") continue;
 
       let pdfFieldName;
       switch (key) {
@@ -55,7 +55,9 @@ async function generatePDF(formData) {
 
 async function generatePDFController(req, res) {
   try {
+    console.log("req body:", req.body);
     const formData = req.body;
+    console.log(formData);
 
     if (!formData.clientName || !formData.VIN_serialNum) {
       throw new Error(
@@ -69,25 +71,16 @@ async function generatePDFController(req, res) {
       /\s/g,
       ""
     )}`;
-
     const pdfBytes = await generatePDF(formData);
-
     const pdfDirectory = path.join(__dirname, "..", "generated_pdfs");
     await fs.promises.mkdir(pdfDirectory, { recursive: true });
-
     const fileName = `NOI_${clientIdentifier}.pdf`; // Changed to use only client name and VIN/Serial Number
     const filePath = path.join(pdfDirectory, fileName);
-
     await fs.promises.writeFile(filePath, pdfBytes);
-
-    const pdfEntry = new PDF({
-      fileName,
-      filePath,
-      caseId: formData.caseId,
-    });
+    const pdfEntry = new PDF({ fileName, filePath, caseId: formData.caseId });
     await pdfEntry.save();
-
     const pdfData = await fs.promises.readFile(filePath);
+
     res.set({
       "Content-Type": "application/pdf",
       "Content-Disposition": `attachment; filename="${fileName}"`,

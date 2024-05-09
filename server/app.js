@@ -16,6 +16,7 @@ const app = express();
 // Increase the payload size limit for JSON requests
 app.use(bodyParser.json({ limit: "10mb" }));
 
+
 // Increase the payload size limit for URL-encoded requests
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
 
@@ -118,3 +119,4 @@ app.use((error, req, res, __) => {
 
 // Export the application
 export default app;
+  
